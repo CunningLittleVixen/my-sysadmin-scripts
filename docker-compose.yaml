@@ -1,0 +1,7 @@
+services:
+  monitor:
+    build:
+      context: .
+    image: my-script:latest
+    container_name: system-monitor
+    restart: unless-stopped

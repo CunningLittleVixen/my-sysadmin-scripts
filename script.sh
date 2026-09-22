@@ -1,11 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
 
 INTERVAL=5
 
+LOG_DIR="${LOG_DIR:-/var/log/script}"
+LOG_FILE="${LOG_FILE:-$LOG_DIR/monitor.log}"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-
-LOG_FILE="$SCRIPT_DIR/monitor.log"
+mkdir -p "$LOG_DIR"
 
 cleanup() {
     echo ""
@@ -14,7 +16,6 @@ cleanup() {
 }
 
 trap cleanup INT TERM
-
 
 if ! touch "$LOG_FILE" 2>/dev/null; then
     echo "Error: cannot write to log file '$LOG_FILE'" >&2
