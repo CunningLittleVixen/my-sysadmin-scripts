@@ -1,11 +1,11 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
 
 INTERVAL=5
 
 
-LOG_FILE="monitor.log"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+
+LOG_FILE="$SCRIPT_DIR/monitor.log"
 
 cleanup() {
     echo ""
@@ -13,12 +13,16 @@ cleanup() {
     exit 0
 }
 
-trap cleanup INT
+trap cleanup INT TERM
+
 
 if ! touch "$LOG_FILE" 2>/dev/null; then
     echo "Error: cannot write to log file '$LOG_FILE'" >&2
     exit 1
 fi
+
+echo "Starting system monitoring. Logging to: $LOG_FILE"
+echo "Press Ctrl+C to stop."
 
 while true; do
     TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
